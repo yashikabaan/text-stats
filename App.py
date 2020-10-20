@@ -52,10 +52,16 @@ class App(Tk):
         self.numSentencesLabel.pack()
         self.newLinesLabel = Label(self, text="Lines: " + str(self.newLines))
         self.newLinesLabel.pack()
+
+        """
+        TODO Add labels for frequencies
+        """
+
         """
         Plot button code
         """
-
+        self.plotButton = ttk.Button(self, text="Plot Histogram", command=self.plotHist)
+        self.plotButton.pack()
         """
         Sentences with Keyword Frame/Section code
         """
@@ -71,8 +77,7 @@ class App(Tk):
     def readFileAndUpdateStatistics(self):
         """
         Reads File from filePath field.
-        Updates the statistics fields.
-        Calls updateStatistics to update GUI.
+        Updates the statistics fields and GUI.
         Caches the file in the cachedFile field.
         @params : None
         @returns : None 
@@ -92,18 +97,6 @@ class App(Tk):
         TODO Add frequencies and cache
         """
         return
-        
-
-    def updateStatistics(self):
-        """
-        Updates the Statistics Frame/Section section's GUI
-        using config method on each element.
-        Uses helper functions to compute the statistics.
-        @params : None
-        @returns : None
-        """
-        self.readFileAndUpdateStatistics()
-        return
 
     def updateKeyword(self):
         """
@@ -120,4 +113,4 @@ class App(Tk):
         Plots histogram.
         @params : None
         """
-        raise NotADirectoryError
+        raise NotImplementedError
