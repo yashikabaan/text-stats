@@ -37,7 +37,8 @@ class App(Tk):
         """
         Refresh Button code : calls readFileAndUpdateStatistics
         """
-
+        self.refreshButton = ttk.Button(self, text="Refresh", command=self.readFileAndUpdateStatistics)
+        self.refreshButton.pack()
         """
         Keyword File Browse Button code
         """
@@ -45,7 +46,12 @@ class App(Tk):
         """
         Statistics Frame/Section
         """
-
+        self.numWordsLabel = Label(self, text="Words: " + str(self.numWords))
+        self.numWordsLabel.pack()
+        self.numSentencesLabel = Label(self, text="Sentences: " + str(self.numSentences))
+        self.numSentencesLabel.pack()
+        self.newLinesLabel = Label(self, text="Lines: " + str(self.newLines))
+        self.newLinesLabel.pack()
         """
         Plot button code
         """
@@ -54,19 +60,13 @@ class App(Tk):
         Sentences with Keyword Frame/Section code
         """
 
-    def browseFile(self):
-        """
-        TODO : add docstring
-        """
-        return filedialog.askopenfilename() # TODO : Add file exists check
-
     def updateFilePath(self):
         """
         TODO : add docstring
         """
-        self.filePath = browseFile() # Updates field
+        self.filePath = filedialog.askopenfilename()  # Updates field
         self.filePathLabel.config(text = "File: " + self.filePath) # Updates the GUI
-        readFileAndUpdateStatistics()
+        self.readFileAndUpdateStatistics()
 
     def readFileAndUpdateStatistics(self):
         """
@@ -77,7 +77,22 @@ class App(Tk):
         @params : None
         @returns : None 
         """
-        raise NotImplementedError
+        file = open(self.filePath,"rt")
+        text = file.read()
+        self.numWords = len(text.split())
+        self.numWordsLabel.config(text="Words: " + str(self.numWords))
+
+        self.numSentences = text.count('.') + text.count('?') + text.count('!')
+        self.numSentencesLabel.config(text="Sentences: " + str(self.numSentences))
+
+        self.newLines = text.count('\n')
+        self.newLinesLabel.config(text="Lines: " + str(self.newLines))
+
+        """
+        TODO Add frequencies and cache
+        """
+        return
+        
 
     def updateStatistics(self):
         """
@@ -87,7 +102,8 @@ class App(Tk):
         @params : None
         @returns : None
         """
-        raise NotImplementedError
+        self.readFileAndUpdateStatistics()
+        return
 
     def updateKeyword(self):
         """
