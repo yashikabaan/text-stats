@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import ttk
 from matplotlib import pyplot as plt
+import numpy as np
 
 class App(Tk):
     def __init__(self):
@@ -113,4 +114,12 @@ class App(Tk):
         Plots histogram.
         @params : None
         """
-        raise NotImplementedError
+        file = open(self.filePath,"rt")
+        text = file.read()
+        s=text.split()
+        labels,counts = np.unique(s,return_counts=True)
+        ticks = range(len(counts))
+        plt.bar(ticks,counts,align='center')
+        plt.xticks(ticks,labels)
+        plt.show()
+        return 
