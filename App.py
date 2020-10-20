@@ -37,7 +37,8 @@ class App(Tk):
         """
         Refresh Button code : calls readFileAndUpdateStatistics
         """
-
+        self.refreshButton = ttk.Button(self, text="Refresh", command=self.readFileAndUpdateStatistics)
+        self.refreshButton.pack()
         """
         Keyword File Browse Button code
         """
@@ -45,49 +46,57 @@ class App(Tk):
         """
         Statistics Frame/Section
         """
+        self.numWordsLabel = Label(self, text="Words: " + str(self.numWords))
+        self.numWordsLabel.pack()
+        self.numSentencesLabel = Label(self, text="Sentences: " + str(self.numSentences))
+        self.numSentencesLabel.pack()
+        self.newLinesLabel = Label(self, text="Lines: " + str(self.newLines))
+        self.newLinesLabel.pack()
+
+        """
+        TODO Add labels for frequencies
+        """
 
         """
         Plot button code
         """
-
+        self.plotButton = ttk.Button(self, text="Plot Histogram", command=self.plotHist)
+        self.plotButton.pack()
         """
         Sentences with Keyword Frame/Section code
         """
-
-    def browseFile(self):
-        """
-        TODO : add docstring
-        """
-        return filedialog.askopenfilename() # TODO : Add file exists check
 
     def updateFilePath(self):
         """
         TODO : add docstring
         """
-        self.filePath = browseFile() # Updates field
+        self.filePath = filedialog.askopenfilename()  # Updates field
         self.filePathLabel.config(text = "File: " + self.filePath) # Updates the GUI
-        readFileAndUpdateStatistics()
+        self.readFileAndUpdateStatistics()
 
     def readFileAndUpdateStatistics(self):
         """
         Reads File from filePath field.
-        Updates the statistics fields.
-        Calls updateStatistics to update GUI.
+        Updates the statistics fields and GUI.
         Caches the file in the cachedFile field.
         @params : None
         @returns : None 
         """
-        raise NotImplementedError
+        file = open(self.filePath,"rt")
+        text = file.read()
+        self.numWords = len(text.split())
+        self.numWordsLabel.config(text="Words: " + str(self.numWords))
 
-    def updateStatistics(self):
+        self.numSentences = text.count('.') + text.count('?') + text.count('!')
+        self.numSentencesLabel.config(text="Sentences: " + str(self.numSentences))
+
+        self.newLines = text.count('\n')
+        self.newLinesLabel.config(text="Lines: " + str(self.newLines))
+
         """
-        Updates the Statistics Frame/Section section's GUI
-        using config method on each element.
-        Uses helper functions to compute the statistics.
-        @params : None
-        @returns : None
+        TODO Add frequencies and cache
         """
-        raise NotImplementedError
+        return
 
     def updateKeyword(self):
         """
@@ -104,4 +113,4 @@ class App(Tk):
         Plots histogram.
         @params : None
         """
-        raise NotADirectoryError
+        raise NotImplementedError
