@@ -152,6 +152,7 @@ class App(Tk):
             for line in file:
                 for l in re.split(r"(\. |\? |\! )",line):
                     self.sentences.append(l)
+        self.updateKeyWord();
         
 
     def updateKeyword(self):
