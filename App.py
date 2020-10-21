@@ -11,14 +11,13 @@ class App(Tk):
     def __init__(self):
         super().__init__()
         self.filePath = ""
-        self.cachedFile = ""
         self.keywordFilePath = ""
         self.numWords = 0
         self.numSentences = 0
         self.newLines = 0
         self.words = []
-        self.mostFrequentWords = []
-        self.leastFrequentWords = []
+        self.mostFrequentWords = ""
+        self.leastFrequentWords = ""
         self.sentencesWithKeywords = ""
         self.sentences = []
         
@@ -67,9 +66,9 @@ class App(Tk):
         """
         Labels for frequencies
         """
-        self.mostFrequentWordsLabel = Label(self, text="Most Frequent Word: " + str(self.mostFrequentWords))
+        self.mostFrequentWordsLabel = Label(self, text="Most Frequent Word: " + (self.mostFrequentWords))
         self.mostFrequentWordsLabel.pack()
-        self.leastFrequentWordsLabel = Label(self, text="Least Frequent Word: " + str(self.leastFrequentWords))
+        self.leastFrequentWordsLabel = Label(self, text="Least Frequent Word: " + (self.leastFrequentWords))
         self.leastFrequentWordsLabel.pack()
 
         """
@@ -105,7 +104,7 @@ class App(Tk):
         """
         Reads File from filePath field.
         Updates the statistics fields and GUI.
-        Caches the file in the cachedFile field.
+        Caches the file in the words and sentences.
         @params : None
         @returns : None 
         """
@@ -121,23 +120,39 @@ class App(Tk):
         self.newLinesLabel.config(text="Lines: " + str(self.newLines))
 
         """
-        TODO Add frequencies and cache
+        Frequencies 
         """
         self.words = text.split()
         wordFrequency = Counter(self.words)
         highest = wordFrequency[mode(self.words)]
         lowest = wordFrequency[wordFrequency.most_common()[-1][0]]
-        self.mostFrequentWords = []
-        self.leastFrequentWords = []
+        self.mostFrequentWords = "  "
+        self.leastFrequentWords = "  "
+        enum=0
         for word in wordFrequency:
-            if wordFrequency[word] == highest:
-                self.mostFrequentWords.append(word)
+            if(enum > 5):
+                self.mostFrequentWords+="..."
+                break
+            elif wordFrequency[word] == highest:
+                self.mostFrequentWords+=word+", "
+                enum+=1
+
+        enum=0
+        for word in wordFrequency:
+            if enum>5:
+                self.leastFrequentWords+="..."
+                break
             elif wordFrequency[word] == lowest:
-                self.leastFrequentWords.append(word)
+                self.leastFrequentWords+=word+ ", "
+                enum+=1
         self.mostFrequentWordsLabel.config(text="Most Frequent Word(s): " + str(self.mostFrequentWords))
         self.leastFrequentWordsLabel.config(text="Least Frequent Word(s): " + str(self.leastFrequentWords))
-        self.sentences = re.split(r' *[\.\?!][\'"\)\]]* *', text)
-
+        self.sentences = []
+        with open(self.filePath) as file:
+            for line in file:
+                for l in re.split(r"(\. |\? |\! )",line):
+                    self.sentences.append(l)
+        
 
     def updateKeyword(self):
         """
@@ -152,10 +167,13 @@ class App(Tk):
         search_keywords = text.split()
         self.sentencesWithKeywords = ""
         for sentence in self.sentences:
+            s = sentence.split(" ")
             for word in search_keywords: 
-                if word in sentence and not(sentence in self.sentencesWithKeywords):
-                    self.sentencesWithKeywords += (sentence)
-                    self.sentencesWithKeywords += ("\n")
+                for i in s:
+                    if word == i and not(sentence in self.sentencesWithKeywords):
+                        # print(word, sentence)
+                        self.sentencesWithKeywords += (sentence)
+                        self.sentencesWithKeywords += ("\n")
         self.sentencesWithKeywordsLabel.config(text="Sentences with keywords: " + "\n" + (self.sentencesWithKeywords))
 
     def plotHist(self):
