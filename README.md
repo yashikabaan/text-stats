@@ -18,4 +18,4 @@ E - Yogesh Deverth (B18098)
 
 1. Install `tkinter` : Google It!.
 2. Install Requirements : `pip3 install -r requirements.txt`.
-3. Run Main.py : `python3 install Main.py`.
+3. Run Main.py : `python3 Main.py`.
