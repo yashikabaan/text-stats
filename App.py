@@ -5,6 +5,7 @@ from typing import Counter
 from matplotlib import pyplot as plt
 import numpy as np
 from statistics import mode
+from nltk.corpus import stopwords
 import re
 
 class App(Tk):
@@ -20,6 +21,7 @@ class App(Tk):
         self.leastFrequentWords = ""
         self.sentencesWithKeywords = ""
         self.sentences = []
+        self.commonwords = set(stopwords.words('english'))
         
         """
         All initializations are below
