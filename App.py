@@ -5,6 +5,8 @@ from typing import Counter
 from matplotlib import pyplot as plt
 import numpy as np
 from statistics import mode
+import nltk
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 import re
 
@@ -26,7 +28,7 @@ class App(Tk):
         """
         All initializations are below
         """
-        self.geometry('500x500')
+        self.geometry('800x650')
         self.grid()
         
         """
@@ -125,30 +127,29 @@ class App(Tk):
         Frequencies 
         """
         self.words = text.split()
-        wordFrequency = Counter(self.words)
-        highest = wordFrequency[mode(self.words)]
+        uncommonWords = [word.lower() for word in self.words if word.lower() not in self.commonwords]
+        wordFrequency = Counter(uncommonWords)
+        highest = wordFrequency[mode(uncommonWords)]
         lowest = wordFrequency[wordFrequency.most_common()[-1][0]]
         self.mostFrequentWords = "  "
         self.leastFrequentWords = "  "
         enum=0
         for word in wordFrequency:
-            if word not in commonwords:
-                if(enum > 5):
-                    self.mostFrequentWords+="..."
-                    break
-                elif wordFrequency[word] == highest:
-                    self.mostFrequentWords+=word+", "
-                    enum+=1
+            if(enum > 5):
+                self.mostFrequentWords+="..."
+                break
+            elif wordFrequency[word] == highest:
+                self.mostFrequentWords+=word+", "
+                enum+=1
 
         enum=0
         for word in wordFrequency:
-            if word not in commonwords:
-                if enum>5:
-                    self.leastFrequentWords+="..."
-                    break
-                elif wordFrequency[word] == lowest:
-                    self.leastFrequentWords+=word+ ", "
-                    enum+=1
+            if enum>5:
+                self.leastFrequentWords+="..."
+                break
+            elif wordFrequency[word] == lowest:
+                self.leastFrequentWords+=word+ ", "
+                enum+=1
         self.mostFrequentWordsLabel.config(text="Most Frequent Word(s): " + str(self.mostFrequentWords))
         self.leastFrequentWordsLabel.config(text="Least Frequent Word(s): " + str(self.leastFrequentWords))
         self.sentences = []
@@ -156,7 +157,8 @@ class App(Tk):
             for line in file:
                 for l in re.split(r"(\. |\? |\! )",line):
                     self.sentences.append(l)
-        self.updateKeyWord();
+        if self.keywordFilePath != "":
+            self.updateKeyword()
         
 
     def updateKeyword(self):
@@ -176,7 +178,6 @@ class App(Tk):
             for word in search_keywords: 
                 for i in s:
                     if word == i and not(sentence in self.sentencesWithKeywords):
-                        # print(word, sentence)
                         self.sentencesWithKeywords += (sentence)
                         self.sentencesWithKeywords += ("\n")
         self.sentencesWithKeywordsLabel.config(text="Sentences with keywords: " + "\n" + (self.sentencesWithKeywords))

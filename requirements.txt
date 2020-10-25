@@ -1,10 +1,13 @@
 certifi==2020.6.20
+click==7.1.2
 cycler==0.10.0
 greenlet==0.4.16
+joblib==0.17.0
 kiwisolver==1.2.0
 matplotlib==3.3.2
 msgpack==1.0.0
 neovim==0.3.1
+nltk==3.5
 numpy==1.19.2
 Pillow==8.0.0
 protobuf==3.13.0
@@ -12,4 +15,6 @@ pycairo==1.20.0
 pynvim==0.4.1
 pyparsing==2.4.7
 python-dateutil==2.8.1
+regex==2020.10.23
 six==1.15.0
+tqdm==4.50.2
