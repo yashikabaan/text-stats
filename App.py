@@ -132,21 +132,23 @@ class App(Tk):
         self.leastFrequentWords = "  "
         enum=0
         for word in wordFrequency:
-            if(enum > 5):
-                self.mostFrequentWords+="..."
-                break
-            elif wordFrequency[word] == highest:
-                self.mostFrequentWords+=word+", "
-                enum+=1
+            if word not in commonwords:
+                if(enum > 5):
+                    self.mostFrequentWords+="..."
+                    break
+                elif wordFrequency[word] == highest:
+                    self.mostFrequentWords+=word+", "
+                    enum+=1
 
         enum=0
         for word in wordFrequency:
-            if enum>5:
-                self.leastFrequentWords+="..."
-                break
-            elif wordFrequency[word] == lowest:
-                self.leastFrequentWords+=word+ ", "
-                enum+=1
+            if word not in commonwords:
+                if enum>5:
+                    self.leastFrequentWords+="..."
+                    break
+                elif wordFrequency[word] == lowest:
+                    self.leastFrequentWords+=word+ ", "
+                    enum+=1
         self.mostFrequentWordsLabel.config(text="Most Frequent Word(s): " + str(self.mostFrequentWords))
         self.leastFrequentWordsLabel.config(text="Least Frequent Word(s): " + str(self.leastFrequentWords))
         self.sentences = []
